@@ -7,8 +7,10 @@ from PyQt5.uic import loadUiType
 from PyQt5.QtGui import QPixmap, QImage
 
 from graphviz import Digraph
+from csv import reader
 
 import os.path
+import numpy as np
 
 form_class, base_class = loadUiType(os.path.join(os.path.dirname(__file__), 'main_form.ui'))
 
@@ -23,10 +25,15 @@ class MainWindow(QDialog):
         self.matrix = None
 
     def load_labels(self, path):
-        pass
+        with open(path, 'r') as label_file:
+            csv_rdr = reader(label_file)
+            self.labels = list()
+            header = next(csv_rdr)
+            for row in csv_rdr:
+                self.labels.append(row[0])
 
     def load_matrix(self, path):
-        pass
+        self.matrix = np.load(path)
 
     @pyqtSlot(int)
     def pageChanged(self, page):
@@ -34,8 +41,19 @@ class MainWindow(QDialog):
             self.render_graph()
 
     def render_graph(self):
-        if not self.matrix:
+        if self.matrix is None or self.matrix.shape[0] != self.matrix.shape[1]:
             return
-        self.graph.node('A', 'King Arthur', color='blue')
+        if self.labels is None or len(self.labels) != self.matrix.shape[0]:
+            return
+        self.graph = Digraph(comment='Когнитивная карта', name='Cognitive map', format='png')
+        for i, label in enumerate(self.labels):
+            self.graph.node(str(i), label, color='blue')
+        size = len(self.labels)
+        for i in range(size):
+            for j in range(size):
+                weight = self.matrix[i, j]
+                if weight != 0:
+                    self.graph.edge(str(i), str(j), label=str(weight),
+                                    color='green' if weight > 0 else 'red')
         img = QImage.fromData(self.graph.pipe(), "png")
-        self.ui.graphLabel.setPixmap(QPixmap.fromImage(img))
+        self.ui.graphView.setPixmap(QPixmap.fromImage(img))
