@@ -2,7 +2,7 @@
 
 
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QFileDialog, QAction
 from PyQt5.uic import loadUiType
 from PyQt5.QtGui import QPixmap, QImage
 
@@ -18,11 +18,21 @@ form_class, base_class = loadUiType(os.path.join(os.path.dirname(__file__), 'mai
 class MainWindow(QDialog):
     def __init__(self, *args):
         super(MainWindow, self).__init__(*args)
+
+
         self.ui = form_class()
         self.ui.setupUi(self)
+
         self.graph = Digraph(comment='Когнитивная карта', name='Cognitive map', format='png')
         self.labels = None
         self.matrix = None
+
+    @pyqtSlot()
+    def saveImage(self):
+        name = QFileDialog.getSaveFileName(self, "Save as", "", "PNG(*.png);; JPEG(*.jpg *.jpeg)")[0]
+        if name != "":
+            self.ui.graphView.grab().save(name)
+
 
     def load_labels(self, path):
         with open(path, 'r') as label_file:
@@ -55,5 +65,5 @@ class MainWindow(QDialog):
                 if weight != 0:
                     self.graph.edge(str(i), str(j), label=str(weight),
                                     color='green' if weight > 0 else 'red')
-        img = QImage.fromData(self.graph.pipe(), "png")
-        self.ui.graphView.setPixmap(QPixmap.fromImage(img))
+        graph = QImage.fromData(self.graph.pipe(), "png")
+        self.ui.graphView.setPixmap(QPixmap.fromImage(graph))

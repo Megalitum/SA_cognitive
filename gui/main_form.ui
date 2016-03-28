@@ -298,7 +298,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="save_image">
        <property name="geometry">
         <rect>
          <x>510</x>
@@ -334,8 +334,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>save_image</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>saveImage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>558</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>pageChanged(int)</slot>
+  <slot>saveImage()</slot>
  </slots>
 </ui>
