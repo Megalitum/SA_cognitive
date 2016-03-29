@@ -2,7 +2,7 @@
 
 
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QDialog, QFileDialog, QAction
+from PyQt5.QtWidgets import QDialog, QFileDialog, QAction, QErrorMessage, QTableWidgetItem
 from PyQt5.uic import loadUiType
 from PyQt5.QtGui import QPixmap, QImage
 
@@ -11,6 +11,9 @@ from csv import reader
 
 import os.path
 import numpy as np
+from gui.read_data import read_data
+from gui.error_message import error
+from gui.tablewidget import tw
 
 form_class, base_class = loadUiType(os.path.join(os.path.dirname(__file__), 'main_form.ui'))
 
@@ -26,6 +29,15 @@ class MainWindow(QDialog):
         self.graph = Digraph(comment='Когнитивная карта', name='Cognitive map', format='png')
         self.labels = None
         self.matrix = None
+
+        #set tableWidget
+        self.tw = tw(self.ui.tw)
+        #self.tw.verticalHeader().hide()
+        #self.tw.setRowCount(0)
+        #self.column_size = 50
+        # for index, size in enumerate(column_size):
+        #      self.ui.tw.setColumnWidth(index,size)
+        # return
 
     @pyqtSlot()
     def saveImage(self):
@@ -67,3 +79,18 @@ class MainWindow(QDialog):
                                     color='green' if weight > 0 else 'red')
         graph = QImage.fromData(self.graph.pipe(), "png")
         self.ui.graphView.setPixmap(QPixmap.fromImage(graph))
+
+    @pyqtSlot()
+    def import_sheet(self):
+        try:
+            name = QFileDialog.getOpenFileName(self, "Open file", "", "Microsoft Excel(*.xlsx *.xls)")[0]
+            matrix= np.array(read_data(name))
+            if len(matrix) == 0 or len(matrix) != len(matrix[0]):
+                raise Exception('Reformat matrix in file')
+            self.tw.data = matrix
+            self.tw.update_data()
+        except Exception as e:
+            error(e)
+
+
+
