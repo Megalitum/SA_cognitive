@@ -2,7 +2,7 @@
 
 
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem
 from PyQt5.uic import loadUiType
 from PyQt5.QtGui import QPixmap, QImage
 
@@ -44,6 +44,23 @@ class MainWindow(QDialog):
         if page == 1:
             self.render_graph()
 
+    @pyqtSlot(QTableWidgetItem)
+    def tableItemChanged(self, item):
+        x = item.row()
+        y = item.column()
+        if str(self.matrix[x, y]) == item.data(0):
+            return
+        value = None
+        try:
+            value = np.float64(item.data(0))
+            if not np.isfinite(value):
+                raise ValueError('NaN')
+            self.matrix[x, y] = value
+        except ValueError:
+            return
+        finally:
+            item.setData(0, str(self.matrix[x, y]))
+
     def render_table(self):
         if self.matrix is None or self.matrix.shape[0] != self.matrix.shape[1]:
             return
@@ -54,6 +71,9 @@ class MainWindow(QDialog):
         self.ui.tableWidget.setColumnCount(self.matrix.shape[1])
         self.ui.tableWidget.setHorizontalHeaderLabels(self.labels)
         self.ui.tableWidget.setVerticalHeaderLabels(self.labels)
+        for i in range(self.matrix.shape[0]):
+            for j in range(self.matrix.shape[1]):
+                self.ui.tableWidget.setItem(i, j, QTableWidgetItem(str(self.matrix[i, j])))
 
     def render_graph(self):
         if self.matrix is None or self.matrix.shape[0] != self.matrix.shape[1]:
@@ -70,6 +90,6 @@ class MainWindow(QDialog):
                 weight = self.matrix[i, j]
                 if weight != 0:
                     self.graph.edge(str(i), str(j), label=str(weight),
-                                    color='green' if weight > 0 else 'red')
+                                    color='green' if weight > 0 else 'red', fontsize='10')
         img = QImage.fromData(self.graph.pipe(), "png")
         self.ui.graphView.setPixmap(QPixmap.fromImage(img))

@@ -386,8 +386,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableWidget</sender>
+   <signal>itemChanged(QTableWidgetItem*)</signal>
+   <receiver>Form</receiver>
+   <slot>tableItemChanged(QTableWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>342</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>280</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>pageChanged(int)</slot>
+  <slot>tableItemChanged(QTableWidgetItem*)</slot>
  </slots>
 </ui>
