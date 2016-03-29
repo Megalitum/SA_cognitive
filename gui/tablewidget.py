@@ -20,6 +20,17 @@ class tw(object):
         except Exception as e:
             error(e)
 
+    def delRow(self, n):
+        if(type(n) == type(list)):
+            for i in n:
+                self.tw.removeRow(i)
+        elif(type(n) == type(0) and n == 0):
+            for i in range(self.tw.rowCount(), -1, -1):
+                self.tw.removeRow(i)
+        elif(type(n) == type(0)):
+            self.tw.removeRow(n)
+
+
     def setColumnSize(self, column_size):
         try:
             for index in range(self.cc()):
@@ -29,6 +40,8 @@ class tw(object):
 
     def update_data(self):
         self.tw.clear()
+        self.setCC(0)
+        self.delRow(0)
         self.setCC(len(self.data))
         try:
             for i, j in enumerate(self.data):

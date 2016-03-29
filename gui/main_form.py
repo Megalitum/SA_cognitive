@@ -92,5 +92,17 @@ class MainWindow(QDialog):
         except Exception as e:
             error(e)
 
+    @pyqtSlot()
+    def addFactor(self):
+        try:
+            n = len(self.tw.data)
+            matrix = np.zeros(shape = (n+1, n+1), dtype = float)
+            matrix[:n, :n] = self.tw.data
+            self.tw.data = matrix
+            self.tw.update_data()
+        except Exception as e:
+            error(e)
+
+
 
 
