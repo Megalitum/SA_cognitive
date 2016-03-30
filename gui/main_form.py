@@ -87,10 +87,14 @@ class MainWindow(QDialog):
             name = QFileDialog.getOpenFileName(self, "Open file", "", "Microsoft Excel(*.xlsx *.xls)")[0]
             if name == '':
                 return
-            matrix= np.array(read_data(name))
+            labels, matrix= read_data(name)
+            matrix = np.array(matrix)
             if len(matrix) == 0 or len(matrix) != len(matrix[0]):
                 raise Exception('Reformat matrix in file')
             self.tw.table_from_data(matrix)
+            self.tw.tw.setHorizontalHeaderLabels(labels)
+            self.tw.tw.setVerticalHeaderLabels(labels)
+            self.tw.lbl_update()
         except Exception as e:
             error(e)
 
