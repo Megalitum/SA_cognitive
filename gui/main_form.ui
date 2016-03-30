@@ -64,7 +64,7 @@
         </spacer>
        </item>
        <item row="1" column="2">
-        <widget class="QPushButton" name="saveButton">
+        <widget class="QPushButton" name="saveBtn">
          <property name="text">
           <string>Зберегти</string>
          </property>
@@ -389,11 +389,45 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tw</sender>
+   <signal>itemChanged(QTableWidgetItem*)</signal>
+   <receiver>Form</receiver>
+   <slot>tableItemChanged(QTableWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>saveBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>saveTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>233</x>
+     <y>467</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>pageChanged(int)</slot>
   <slot>saveImage()</slot>
   <slot>import_sheet()</slot>
   <slot>addFactor()</slot>
+  <slot>tableItemChanged(QTableWidgetItem*)</slot>
+  <slot>saveTable()</slot>
  </slots>
 </ui>
