@@ -30,14 +30,7 @@
        <string>Вхідні дані</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="importButton">
-         <property name="text">
-          <string>Завантажити</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="4">
+       <item row="0" column="0" colspan="5">
         <widget class="QTableWidget" name="tw">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -50,21 +43,40 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="3">
+       <item row="1" column="0">
+        <widget class="QPushButton" name="importButton">
+         <property name="minimumSize">
+          <size>
+           <width>90</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Завантажити</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>297</width>
+           <width>319</width>
            <height>20</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="1" column="2">
+       <item row="1" column="4">
         <widget class="QPushButton" name="saveBtn">
+         <property name="minimumSize">
+          <size>
+           <width>90</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>Зберегти</string>
          </property>
@@ -72,6 +84,12 @@
        </item>
        <item row="1" column="1">
         <widget class="QPushButton" name="add_factor">
+         <property name="minimumSize">
+          <size>
+           <width>90</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>Додати фактор</string>
          </property>
@@ -83,241 +101,284 @@
       <attribute name="title">
        <string>Граф</string>
       </attribute>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>330</y>
-         <width>201</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="title">
-        <string>Статистика</string>
-       </property>
-       <widget class="QLabel" name="label">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>91</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Найбільше власне число:</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>50</y>
-          <width>91</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Кількість парних циклів:</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lambda_max">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>20</y>
-          <width>61</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="cycle_pair">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>50</y>
-          <width>61</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QScrollArea" name="scrollArea">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>571</width>
-         <height>311</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>571</width>
-         <height>311</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>571</width>
-         <height>311</height>
-        </size>
-       </property>
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>569</width>
-          <height>309</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0" colspan="4">
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="minimumSize">
+          <size>
+           <width>571</width>
+           <height>311</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>571</width>
+           <height>311</height>
+          </size>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>569</width>
+            <height>309</height>
+           </rect>
+          </property>
           <widget class="QLabel" name="graphView">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>9</y>
+             <width>551</width>
+             <height>291</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>551</width>
+             <height>291</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Image Here</string>
+            <string>                                                                                  Graph </string>
            </property>
           </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="geometry">
-        <rect>
-         <x>220</x>
-         <y>330</y>
-         <width>114</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="title">
-        <string>Стійкість</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QCheckBox" name="checkBox">
-          <property name="layoutDirection">
-           <enum>Qt::RightToLeft</enum>
+         </widget>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="minimumSize">
+          <size>
+           <width>201</width>
+           <height>91</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>91</height>
+          </size>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="title">
+          <string>Статистика</string>
+         </property>
+         <widget class="QLabel" name="label">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>20</y>
+            <width>91</width>
+            <height>31</height>
+           </rect>
           </property>
           <property name="text">
-           <string>- за значенням</string>
+           <string>Найбільше власне число за модулем</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="checkBox_2">
-          <property name="layoutDirection">
-           <enum>Qt::RightToLeft</enum>
+         <widget class="QLabel" name="label_2">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>50</y>
+            <width>91</width>
+            <height>31</height>
+           </rect>
           </property>
           <property name="text">
-           <string>- за збуренням</string>
+           <string>Кількість парних циклів</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="checkBox_3">
-          <property name="layoutDirection">
-           <enum>Qt::RightToLeft</enum>
+         <widget class="QLineEdit" name="lambda_max">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>20</y>
+            <width>61</width>
+            <height>20</height>
+           </rect>
           </property>
-          <property name="text">
-           <string>- структурна   </string>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>61</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>61</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>330</y>
-         <width>231</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Цикли</string>
-       </property>
-       <widget class="QPlainTextEdit" name="cycle">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>211</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="plainText">
-         <string/>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QPushButton" name="save_image">
-       <property name="geometry">
-        <rect>
-         <x>510</x>
-         <y>430</y>
-         <width>75</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Зберегти</string>
-       </property>
-      </widget>
+         <widget class="QLineEdit" name="cycle_pair">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>50</y>
+            <width>61</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>61</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>61</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="minimumSize">
+          <size>
+           <width>114</width>
+           <height>91</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>91</height>
+          </size>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="title">
+          <string>Стійкість</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="stable_value">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>- за значенням</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="stable_disturbance">
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>- за збуренням</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="stable_structure">
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>- структурна   </string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="2" colspan="2">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="minimumSize">
+          <size>
+           <width>231</width>
+           <height>91</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Цикли</string>
+         </property>
+         <widget class="QPlainTextEdit" name="cycle">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>231</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>231</width>
+            <height>61</height>
+           </size>
+          </property>
+          <property name="plainText">
+           <string/>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>164</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="3">
+        <widget class="QPushButton" name="save_image">
+         <property name="text">
+          <string>Зберегти</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -412,8 +473,56 @@
    <slot>saveTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>233</x>
-     <y>467</y>
+     <x>598</x>
+     <y>478</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stable_value</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>checkBoxClicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>285</x>
+     <y>387</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stable_structure</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>checkBoxClicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>285</x>
+     <y>430</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stable_disturbance</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>Form</receiver>
+   <slot>checkBoxClicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>285</x>
+     <y>409</y>
     </hint>
     <hint type="destinationlabel">
      <x>310</x>
@@ -429,5 +538,6 @@
   <slot>addFactor()</slot>
   <slot>tableItemChanged(QTableWidgetItem*)</slot>
   <slot>saveTable()</slot>
+  <slot>checkBoxClicked(bool)</slot>
  </slots>
 </ui>

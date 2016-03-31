@@ -48,7 +48,7 @@ class tw(object):
         for i in range(self.cc()):
             s = self.tw.horizontalHeaderItem(i)
             if s is None:
-                l.append(str(i))
+                l.append(str(i+1))
             else:
                 l.append(s.text())
         self.labels = l

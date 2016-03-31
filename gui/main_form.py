@@ -27,6 +27,7 @@ class MainWindow(QDialog):
 
         self.ui = form_class()
         self.ui.setupUi(self)
+        self.ui.tabWidget.setCurrentIndex(0)
 
         self.graph = Digraph(comment='Когнитивная карта', name='Cognitive map', format='png')
         self.labels = None
@@ -42,28 +43,32 @@ class MainWindow(QDialog):
         # return
 
     @pyqtSlot()
-    def saveImage(self):
+    def saveImage(self): # should be changed
+        """
+        save image as png
+        :return:
+        """
         name = QFileDialog.getSaveFileName(self, "Save as", "", "PNG(*.png)")[0]
         if name != "":
             self.ui.graphView.grab().save(name)
 
 
-    def load_labels(self, path):
-        with open(path, 'r') as label_file:
-            csv_rdr = reader(label_file)
-            self.labels = list()
-            header = next(csv_rdr)
-            for row in csv_rdr:
-                self.labels.append(row[0])
-
-    def load_matrix(self, path):
-        self.matrix = np.load(path)
-
     @pyqtSlot(int)
     def pageChanged(self, page):
-        if page == 1:
-            self.render_graph()
-            self.calc()
+        if page == 1: # Graph page
+            try:
+                if self.tw.data.shape[0] == 0:
+                    self.ui.tabWidget.setCurrentIndex(0)
+                    error("add data to sheet")
+                    return
+                self.render_graph()
+            except Exception as e:
+                self.ui.tabWidget.setCurrentIndex(0)
+                error("while building graph; "+str(e))
+            try:
+                self.calc()
+            except Exception as e:
+                error(e)
 
     def calc(self):
         """
@@ -71,10 +76,24 @@ class MainWindow(QDialog):
         :return:
         """
         eig = eigenvalues(self.tw.data)
-        self.ui.lambda_max.setText(str(np.max(eig)))
+        maxeig = round(np.max(np.abs(eig)), 3)
+        self.ui.lambda_max.setText(str(maxeig))
+        if maxeig < 1:
+            self.ui.stable_value.setChecked(True)
+        else:
+            self.ui.stable_value.setChecked(False)
+        if maxeig <=1:
+            self.ui.stable_disturbance.setChecked(True)
+        else:
+            self.ui.stable_disturbance.setChecked(False)
+
 
 
     def render_graph(self):
+        """
+        build graph from data and labels
+        :return:
+        """
         if self.tw.data.shape[0] == 0 or self.tw.data.shape[0] != self.tw.data.shape[1]:
             return
         self.graph = Digraph(comment='Когнитивна карта', name='Cognitive map', format='png')
@@ -92,6 +111,10 @@ class MainWindow(QDialog):
 
     @pyqtSlot()
     def import_sheet(self):
+        """
+        import data to tablewidet from file
+        :return:
+        """
         try:
             name = QFileDialog.getOpenFileName(self, "Open file", "", "Microsoft Excel(*.xlsx *.xls)")[0]
             if name == '':
@@ -129,6 +152,7 @@ class MainWindow(QDialog):
                 self.tw.tw.setItem(n, i, self.twitem('0.0'))
                 self.tw.tw.setItem(i, n, self.twitem('0.0'))
             self.tw.tw.setItem(n, n, self.twitem('0.0'))
+            self.tw.lbl_update()
         except Exception as e:
             error(e)
 
@@ -170,6 +194,7 @@ class MainWindow(QDialog):
             else:
                 self.tw.delRow(indexes)
                 self.tw.update_data_from_table()
+                self.tw.lbl_update()
 
 
     @pyqtSlot()
@@ -181,6 +206,7 @@ class MainWindow(QDialog):
         self.tw.update_data_from_table()
         if len(self.tw.data) == 0:
             error("Неможливо зберегти.Таблиця порожня.",2)
+            return
         self.tw.lbl_update()
         name = QFileDialog.getSaveFileName(self, "Save as", "", "Microsoft Excel(*.xlsx *.xls)")[0]
         if name == "":
@@ -193,3 +219,13 @@ class MainWindow(QDialog):
             ws.append(self.tw.data[i].tolist())
         wb.save(name)
         error("Збережено", 1, False)
+
+    @pyqtSlot(bool)
+    def checkBoxClicked(self, state):
+        """
+        keep state after click checkBox
+        :param state: true is checkbox is checked, else - false
+        :return:
+        """
+        checkBox = self.sender()
+        checkBox.setChecked(not state)
