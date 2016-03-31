@@ -15,6 +15,7 @@ from gui.read_data import read_data
 from gui.error_message import error
 from gui.tablewidget import tw
 from openpyxl import Workbook
+from logic.math import *
 
 form_class, base_class = loadUiType(os.path.join(os.path.dirname(__file__), 'main_form.ui'))
 
@@ -62,19 +63,27 @@ class MainWindow(QDialog):
     def pageChanged(self, page):
         if page == 1:
             self.render_graph()
+            self.calc()
+
+    def calc(self):
+        """
+        calculate math operations
+        :return:
+        """
+        eig = eigenvalues(self.tw.data)
+        self.ui.lambda_max.setText(str(np.max(eig)))
+
 
     def render_graph(self):
-        if self.matrix is None or self.matrix.shape[0] != self.matrix.shape[1]:
+        if self.tw.data.shape[0] == 0 or self.tw.data.shape[0] != self.tw.data.shape[1]:
             return
-        if self.labels is None or len(self.labels) != self.matrix.shape[0]:
-            return
-        self.graph = Digraph(comment='Когнитивная карта', name='Cognitive map', format='png')
-        for i, label in enumerate(self.labels):
+        self.graph = Digraph(comment='Когнитивна карта', name='Cognitive map', format='png')
+        for i, label in enumerate(self.tw.labels):
             self.graph.node(str(i), label, color='blue')
-        size = len(self.labels)
+        size = len(self.tw.labels)
         for i in range(size):
             for j in range(size):
-                weight = self.matrix[i, j]
+                weight = self.tw.data[i, j]
                 if weight != 0:
                     self.graph.edge(str(i), str(j), label=str(weight),
                                     color='green' if weight > 0 else 'red')
@@ -91,7 +100,7 @@ class MainWindow(QDialog):
             matrix = np.array(matrix)
             if len(matrix) == 0 or len(matrix) != len(matrix[0]):
                 raise Exception('Reformat matrix in file')
-            self.tw.table_from_data(matrix)
+            self.tw.table_from_data(np.nan_to_num(matrix))
             self.tw.tw.setHorizontalHeaderLabels(labels)
             self.tw.tw.setVerticalHeaderLabels(labels)
             self.tw.lbl_update()
