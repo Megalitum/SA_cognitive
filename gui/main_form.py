@@ -43,14 +43,19 @@ class MainWindow(QDialog):
         # return
 
     @pyqtSlot()
-    def saveImage(self): # should be changed
+    def saveImage(self): 
         """
         save image as png
         :return:
         """
         name = QFileDialog.getSaveFileName(self, "Save as", "", "PNG(*.png)")[0]
         if name != "":
-            self.ui.graphView.grab().save(name)
+            try:
+                self.graph.render(name, cleanup=True)
+                error("Збережено", 1, False)
+            except Exception as e:
+                error("Помилка збереження. " + str(e))
+            #self.ui.graphView.grab().save(name)
 
 
     @pyqtSlot(int)
