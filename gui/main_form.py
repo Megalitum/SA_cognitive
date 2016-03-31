@@ -81,6 +81,7 @@ class MainWindow(QDialog):
         if self.labels is None or len(self.labels) != self.matrix.shape[0]:
             return
         self.__fill_labels()
+        cycles = find_cycles(self.matrix)
         self.graph = Digraph(comment='Когнитивная карта', name='Cognitive map', format='png')
         for i, label in enumerate(self.labels):
             self.graph.node(str(i), label, color='blue')
@@ -93,3 +94,31 @@ class MainWindow(QDialog):
                                     color='green' if weight > 0 else 'red', fontsize='10')
         img = QImage.fromData(self.graph.pipe(), "png")
         self.ui.graphView.setPixmap(QPixmap.fromImage(img))
+
+
+def find_cycles(adj : np.array):
+    assert adj.shape[0] == adj.shape[1]
+    size = adj.shape[0]
+    used = np.array([0]*size)
+    cycles = list()
+    def dfs(root, parent):
+        used[root] = 1
+        trace = list()
+        for num, weight in enumerate(adj[root]):
+            if num != parent and weight != 0:
+                if used[num] == 0:
+                    trace.extend(dfs(num, root))
+                elif used[num] == 1:
+                    trace.append([num])
+                else:
+                    continue
+        used[root] = 2
+        for path in trace:
+            if path[0] == root:
+                cycles.append(path)
+                trace.remove(path)
+            else:
+                path.append(root)
+        return trace
+    dfs(0,-1)
+    return cycles
