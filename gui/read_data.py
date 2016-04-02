@@ -1,3 +1,4 @@
+# coding: utf8
 import pandas as pd
 
 def read_data(filename = 'norm.xlsx'):

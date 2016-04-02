@@ -9,7 +9,6 @@ from PyQt5.QtGui import QPixmap, QImage
 from graphviz import Digraph
 
 import os.path
-import numpy as np
 from gui.read_data import read_data
 from gui.error_message import error
 from gui.tablewidget import tw
@@ -75,7 +74,6 @@ class MainWindow(QDialog):
                 self.calc()
             except Exception as e:
                 error(e)
-
     def calc(self):
         """
         calculate math operations

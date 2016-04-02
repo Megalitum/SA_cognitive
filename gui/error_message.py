@@ -1,3 +1,5 @@
+# coding: utf8
+
 from PyQt5.QtWidgets import  QErrorMessage, QMessageBox
 
 def error(e, type_icon = 2, err = True):
