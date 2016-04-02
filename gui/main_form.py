@@ -7,7 +7,6 @@ from PyQt5.uic import loadUiType
 from PyQt5.QtGui import QPixmap, QImage
 
 from graphviz import Digraph
-from csv import reader
 
 import os.path
 import numpy as np
@@ -19,6 +18,8 @@ from logic.math import *
 
 form_class, base_class = loadUiType(os.path.join(os.path.dirname(__file__), 'main_form.ui'))
 
+scaleUp = pyqtSlot()
+scaleDown = pyqtSlot()
 
 class MainWindow(QDialog):
     def __init__(self, *args):
@@ -43,7 +44,7 @@ class MainWindow(QDialog):
         # return
 
     @pyqtSlot()
-    def saveImage(self): 
+    def saveImage(self):
         """
         save image as png
         :return:
@@ -80,18 +81,66 @@ class MainWindow(QDialog):
         calculate math operations
         :return:
         """
-        eig = eigenvalues(self.tw.data)
-        maxeig = round(np.max(np.abs(eig)), 3)
-        self.ui.lambda_max.setText(str(maxeig))
-        if maxeig < 1:
-            self.ui.stable_value.setChecked(True)
-        else:
-            self.ui.stable_value.setChecked(False)
-        if maxeig <=1:
-            self.ui.stable_disturbance.setChecked(True)
-        else:
-            self.ui.stable_disturbance.setChecked(False)
+        try:
+            eig = eigenvalues(self.tw.data)
+            maxeig = round(np.max(np.abs(eig)), 3)
+            self.ui.lambda_max.setText(str(maxeig))
+            if maxeig < 1:
+                self.ui.stable_value.setChecked(True)
+            else:
+                self.ui.stable_value.setChecked(False)
+            if maxeig <=1:
+                self.ui.stable_disturbance.setChecked(True)
+            else:
+                self.ui.stable_disturbance.setChecked(False)
 
+            #work with cycles
+            cycles = find_cycles(self.tw.data) # all cycles
+            error(cycles)
+            pair_cycles = []
+            for cycle in cycles:
+                if self.pair_cycles(cycle):
+                    pair_cycles.append(cycle)
+            self.show_cycles(pair_cycles)
+            len_p_c = len(pair_cycles)
+            self.ui.cycle_pair.setText(str(len_p_c))
+            if len_p_c == 0:
+                self.ui.stable_structure.setChecked(True)
+            else:
+                self.ui.stable_structure.setChecked(False)
+
+
+        except Exception as e:
+            error("calculation. " + str(e))
+
+
+    def pair_cycles(self, cycle):
+        """
+        return  bool if cycle with pair number red weight
+        :param cycles:
+        :return: true if cycle has pair red peak
+        """
+        pair = True
+        for i in range(len(cycle[:-1])):
+            if self.tw.data[cycle[i],cycle[i+1]] < 0.0:
+                pair = not pair
+        return pair
+
+    def show_cycles(self, cycles):
+        """
+        print cycles to text edit
+        :return:
+        """
+        s = ''
+        for i in range(len(cycles)):
+            s+= str(i+1)
+            s+= ')'
+            for j in reversed(cycles[i]):
+                s+=self.tw.labels[j]
+                s += '->'
+            s = s[:-2]
+            s+='\n'
+        self.ui.cycle.setPlainText(s)
 
 
     def render_graph(self):
@@ -188,7 +237,7 @@ class MainWindow(QDialog):
         :return:
         """
         a = e.nativeScanCode()
-        if a == 339 or 14:
+        if a == 339 or a == 14:
             indexrow = self.tw.tw.selectionModel().selectedRows()
             indexcol = self.tw.tw.selectionModel().selectedColumns()
             indexes = sorted(set(index.row() for index in indexrow).union(\
