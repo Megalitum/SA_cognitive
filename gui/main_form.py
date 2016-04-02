@@ -120,5 +120,7 @@ def find_cycles(adj : np.array):
             else:
                 path.append(root)
         return trace
-    dfs(0,-1)
+    for i in range(size):
+        if used[i] == 0:
+            dfs(i, -1)
     return cycles
