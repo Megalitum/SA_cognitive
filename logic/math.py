@@ -23,6 +23,7 @@ def find_cycles(adj : np.array):
         used[root] = 2
         for path in reversed(trace):
             if path[0] == root:
+                path.reverse()
                 cycles.append(path)
                 trace.remove(path)
             else:

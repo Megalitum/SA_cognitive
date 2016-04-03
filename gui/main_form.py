@@ -138,7 +138,7 @@ class MainWindow(QDialog):
         for i in range(len(cycles)):
             s+= str(i+1)
             s+= ')'
-            for j in reversed(cycles[i]):
+            for j in cycles[i]:
                 s+=self.tw.labels[j]
                 s += '->'
             s = s[:-2]
