@@ -13,6 +13,7 @@ from gui.read_data import read_data
 from gui.error_message import error
 from gui.tablewidget import tw
 import pandas as pd
+import datetime as dt
 from logic.math import *
 
 form_class, base_class = loadUiType(os.path.join(os.path.dirname(__file__), 'main_form.ui'))
@@ -262,6 +263,7 @@ class MainWindow(QDialog):
         self.tw.lbl_update()
         name = QFileDialog.getSaveFileName(self, "Save as", "", "Microsoft Excel(*.xlsx *.xls)")[0]
         if name == "":
+            error("Неможливо зберегти. Введіть назву файлу")
             return
 
         try:
@@ -269,7 +271,14 @@ class MainWindow(QDialog):
             pd.DataFrame(self.tw.data).to_excel(writer, 'CognitiveAnalyze',header = self.tw.labels)
             writer.save()
         except Exception as e:
-            error("Error in writing" + str(e))
+            error("Не збережено в основний шлях. " + str(e))
+            try:
+                fname = os.getcwd()+'\\data_'+ dt.datetime.now().strftime("%Y-%m-%d_%H'%M'%S") + '.out'
+                np.savetxt(fname, X = self.tw.data, delimiter=',')
+                error('Збережено в робочу директорію', type_icon=1, err =False)
+            except Exception as e:
+                error("Не збережено. " + str(e))
+                return
             return
         error("Збережено", 1, False)
 
