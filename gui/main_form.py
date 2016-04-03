@@ -120,9 +120,13 @@ class MainWindow(QDialog):
         :return: true if cycle has pair red peak
         """
         pair = True
+        if len(cycle) <=1:
+            return False
         for i in range(len(cycle[:-1])):
             if self.tw.data[cycle[i],cycle[i+1]] < 0.0:
                 pair = not pair
+        if self.tw.data[cycle[-1],cycle[0]]<0.0:
+            pair = not pair
         return pair
 
     def show_cycles(self, cycles):
