@@ -12,7 +12,7 @@ import os.path
 from gui.read_data import read_data
 from gui.error_message import error
 from gui.tablewidget import tw
-from openpyxl import Workbook
+import pandas as pd
 from logic.math import *
 
 form_class, base_class = loadUiType(os.path.join(os.path.dirname(__file__), 'main_form.ui'))
@@ -94,7 +94,7 @@ class MainWindow(QDialog):
 
             #work with cycles
             cycles = find_cycles(self.tw.data) # all cycles
-            error(cycles)
+            #error(cycles)
             pair_cycles = []
             for cycle in cycles:
                 if self.pair_cycles(cycle):
@@ -263,14 +263,16 @@ class MainWindow(QDialog):
         name = QFileDialog.getSaveFileName(self, "Save as", "", "Microsoft Excel(*.xlsx *.xls)")[0]
         if name == "":
             return
-        wb = Workbook()
-        #get active worksheet
-        ws = wb.active
-        ws.append(self.tw.labels)
-        for i in range(len(self.tw.data)):
-            ws.append(self.tw.data[i].tolist())
-        wb.save(name)
+
+        try:
+            writer = pd.ExcelWriter(name)
+            pd.DataFrame(self.tw.data).to_excel(writer, 'CognitiveAnalyze',header = self.tw.labels)
+            writer.save()
+        except Exception as e:
+            error("Error in writing" + str(e))
+            return
         error("Збережено", 1, False)
+
 
     @pyqtSlot(bool)
     def checkBoxClicked(self, state):
