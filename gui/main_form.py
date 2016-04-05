@@ -178,6 +178,12 @@ class MainWindow(QDialog):
                 return
             labels, matrix= read_data(name)
             matrix = np.array(matrix)
+            # for i in range(matrix.shape[0]):
+            #     for j in range(matrix.shape[1]):
+            #         if matrix[i,j] <-0.20:
+            #             matrix[i,j] = matrix[i,j]+0.15
+            #         if matrix[i,j] >0.2:
+            #             matrix[i,j] -=0.15
             if len(matrix) == 0 or len(matrix) != len(matrix[0]):
                 raise Exception('Reformat matrix in file')
             self.tw.table_from_data(np.nan_to_num(matrix))
@@ -191,6 +197,7 @@ class MainWindow(QDialog):
         item = QTableWidgetItem(str(s))
         item.setTextAlignment(Qt.AlignHCenter)
         return item
+
 
     @pyqtSlot()
     def addFactor(self):
